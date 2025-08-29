@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+v0=50 #Parameters
+g=9.8
+airres=0.1
+tmax=10
+dt=0.01
+xres=[0]
+yres=[0]
+theta=int(input("Enter angle in degrees:"))
+theta=np.radians(theta)
+v0x=v0*np.cos(theta)
+v0y=v0*np.sin(theta)
+t=np.arange(0,tmax,dt) #Defining t Vector
+xnores=v0x*t
+ynores=v0y*t-(0.5*g*t**2)
+vx=v0x
+vy=v0y
+for i in t[1:]: #Traverses The t Vector
+    ax=(-airres)*vx #Axes Updation
+    ay=(-g)-airres*vy
+    vx+=ax*dt
+    vy+=ay*dt
+    xres.append(xres[-1]+vx*dt) #Position Vectors
+    yres.append(yres[-1]+vy*dt)
+    if yres[-1]<0:
+        break #Hitting The Ground
+plt.figure(figsize=(10,6)) #Plot Size
+range=xres[-1]
+plt.plot(xnores,ynores,label="No Air Resistance")
+plt.plot(xres,yres,label="Air Resistance")
+plt.axvline(range,color="blue",linestyle="--",alpha=0.7)
+plt.axvline(range,color="green",linestyle="--",alpha=0.7) #Distance Marking
+plt.text(range,1,f"{range:.1f} m",color="blue",ha="center",va="bottom")
+plt.text(range,1,f"{range:.1f} m",color="orange",ha="center",va="bottom")
+plt.xlim(left=0)
+plt.ylim(bottom=0)
+plt.xlabel("Range")
+plt.ylabel("Height")
+plt.title("Ball Trajectory With and Without Air Resistance")
+plt.legend()
+plt.grid(True)
+plt.show()
